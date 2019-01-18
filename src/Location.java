@@ -17,7 +17,7 @@ public class Location {
         this.capacity = (int) (Math.random()*50) +10;
         int count = nextCount;
         for(int i = 0; i <= capacity; i++){
-            offices.add(new Office("office"));
+            offices.add(new Office("office "));
         }
         //rentAgent = actorSystem.actorOf(Props.create(RentAgent.class), "rentAgent"+name);
     }
