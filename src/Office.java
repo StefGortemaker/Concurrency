@@ -2,12 +2,16 @@ public class Office {
 
     private Boolean available;
     private String name;
-    int count = 1;
+    private String location;
+    private int count;
+    private static int nextCount = 1;
 
-    public Office(String name){
+    public Office(String name, String location){
+        count = nextCount;
+        nextCount++;
         available = true;
         this.name = name + count;
-        count++;
+        this.location = location;
     }
 
     public Boolean getAvailable() {
@@ -18,4 +22,7 @@ public class Office {
         return this.name;
     }
 
+    public String getLocation() {
+        return location;
+    }
 }

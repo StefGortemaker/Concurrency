@@ -6,15 +6,16 @@ import java.util.ArrayList;
 
 public class Location {
 
-    private ArrayList<Office> offices = new ArrayList<>(10);;
+    private ArrayList<Office> offices ;
     private ActorRef rentAgent;
     private String name;
 
     public Location(String name, ActorSystem actorSystem){
         this.name = name;
-        for(int i = 0; i < offices.size(); i++){
-            offices.add(new Office("office"));
-            System.out.println(offices.get(i).getName());
+        this.offices = new ArrayList<>();
+        for(int i = 1; i <= 10; i++){
+            offices.add(new Office(name+" office ", name));
+
         }
         rentAgent = actorSystem.actorOf(Props.create(RentAgent.class), "rentAgent"+name);
     }
