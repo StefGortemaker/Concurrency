@@ -1,4 +1,5 @@
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.actor.Props;
 
 import java.util.ArrayList;
@@ -9,13 +10,13 @@ public class Location {
     private ActorRef rentAgent;
     private String name;
 
-    public Location(String name){
+    public Location(String name, ActorSystem actorSystem){
         this.name = name;
         for(int i = 0; i < offices.size(); i++){
             offices.add(new Office("office"));
             System.out.println(offices.get(i).getName());
         }
-        rentAgent = SuperFlex.actorSystem.actorOf(Props.create(RentAgent.class), "rentAgent"+name);
+        rentAgent = actorSystem.actorOf(Props.create(RentAgent.class), "rentAgent"+name);
     }
 
     public ActorRef getRentAgent() {

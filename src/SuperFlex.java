@@ -18,8 +18,8 @@ public class SuperFlex {
         actorSystem = ActorSystem.create("SuperFlex-App");
 
         locations = new ArrayList<>(5);
-        locations.add(new Location("Enschede"));
-        locations.add(new Location("Deventer"));
+        locations.add(new Location("Enschede", actorSystem));
+        locations.add(new Location("Deventer", actorSystem));
 
         ActorRef rentAgentEnschede = locationCheck("Enschede").getRentAgent();
         ActorRef rentAgentDeventer = locationCheck("Deventer").getRentAgent();
