@@ -7,7 +7,7 @@ public class Office {
     public Office(String name){
         available = true;
         this.name = name + count;
-        count++;
+        //count++;
     }
 
     public Boolean getAvailable() {

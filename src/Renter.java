@@ -18,9 +18,6 @@ public class Renter extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder().match(Message.class, message -> {
             switch (message) {
-                case I_WANT_TO_RENT_OFFICE:
-                    System.out.println("I want to rent a office");
-                    break;
                 case OFFICE_AVAILABLE:
                     System.out.println("Great");
                     break;
@@ -40,7 +37,7 @@ public class Renter extends AbstractActor {
     @Override
     public void preStart() {
         System.out.println("Renter started");
-        rentAgent.tell(Message.I_WANT_TO_RENT_OFFICE, getSelf());
+        //rentAgent.tell(Message.I_WANT_TO_RENT_OFFICE, getSelf());
 
     }
 

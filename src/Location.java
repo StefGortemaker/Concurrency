@@ -6,17 +6,19 @@ import java.util.ArrayList;
 
 public class Location {
 
-    private ArrayList<Office> offices = new ArrayList<>(10);;
+    private ArrayList<Office> offices = new ArrayList<>();
+    private int capacity;
     private ActorRef rentAgent;
     private String name;
 
     public Location(String name, ActorSystem actorSystem){
         this.name = name;
-        for(int i = 0; i < offices.size(); i++){
+        this.capacity = 10;
+        for(int i = 0; i < capacity; i++){
             offices.add(new Office("office"));
-            System.out.println(offices.get(i).getName());
+            //System.out.println(offices.get(i).getName());
         }
-        rentAgent = actorSystem.actorOf(Props.create(RentAgent.class), "rentAgent"+name);
+        //rentAgent = actorSystem.actorOf(Props.create(RentAgent.class), "rentAgent"+name);
     }
 
     public ActorRef getRentAgent() {
@@ -26,7 +28,7 @@ public class Location {
     public Boolean checkAvailabilityOffice(){
         boolean availability = false;
         for(Office office : offices){
-            System.out.println(office.getName());
+            //System.out.println(office.getName());
             if(office.getAvailable()) {
                 availability = true;
             }
