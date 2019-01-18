@@ -1,6 +1,7 @@
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import java.util.ArrayList;
 import scala.sys.Prop;
 
 public class RentAgent extends AbstractActor {
@@ -51,5 +52,14 @@ public class RentAgent extends AbstractActor {
 
     public void postStop() {
         System.out.println("RentAgent exiting");
+    }
+
+    public ArrayList<Office> getOffices(String locationName){
+        for(Location location : SuperFlex.locations){
+            if(location.getName().equals(locationName)){
+                return location.getOffices();
+            }
+        }
+        return null;
     }
 }

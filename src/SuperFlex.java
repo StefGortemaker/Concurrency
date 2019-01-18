@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class SuperFlex {
 
   public ActorSystem actorSystem;
-  private ArrayList<Location> locations;
+  public static ArrayList<Location> locations;
 
   public static void main(String[] args) {
     SuperFlex superFlex = new SuperFlex();
@@ -18,8 +18,8 @@ public class SuperFlex {
     actorSystem = ActorSystem.create("SuperFlex-App");
 
     locations = new ArrayList<>(5);
-    locations.add(new Location("Enschede", actorSystem));
-    locations.add(new Location("Deventer", actorSystem));
+    locations.add(new Location("Enschede"));
+    locations.add(new Location("Deventer"));
 
     ActorRef rentAgentEnschede = actorSystem.actorOf(RentAgent.prop("Enschede", locations.get(0)));
     ActorRef rentAgentDeventer = actorSystem.actorOf(RentAgent.prop("Deventer", locations.get(1)));
@@ -37,5 +37,15 @@ public class SuperFlex {
       }
     }
     return null;
+  }
+
+  private void createLocations(){
+    for(int i = 1; i <=10 ; i++){
+      locations.add(new Location("Location " +i));
+    }
+  }
+
+  private ArrayList<Location> getLocations(){
+    return locations;
   }
 }
