@@ -1,6 +1,7 @@
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
+import java.util.Scanner;
 
 public class Renter extends AbstractActor {
 
@@ -17,19 +18,32 @@ public class Renter extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder().match(Message.class, message -> {
+
+            Scanner scanner = new Scanner(System.in);
+
             switch (message) {
                 case OFFICE_AVAILABLE:
-                    System.out.println("Great");
+                    System.out.println("Office is available do you  want ro rent or not?(Y/N)");
+
+                    if (scanner.nextLine().equalsIgnoreCase("Y")){
+                        getSender().tell(Message.I_WANT_TO_RENT_OFFICE, getSelf());
+                    } else {
+                        getSender().tell(Message.I_DONT_WANT_TO_RENT_OFFICE, getSelf());
+                    }
                     break;
                 case OFFICE_NOT_AVAILABLE:
-                    System.out.println("To bad");
+                    System.out.println("Office is not available do you want to be notified when it is?");
+
+                    if (scanner.nextLine().equalsIgnoreCase("Y")){
+                        getSender().tell(Message.I_WANT_TO_RESERVE, getSelf());
+                    } else {
+                        getSender().tell(Message.I_DONT_WANT_TO_RESERVE, getSelf());
+                    }
                     break;
                 default:
-                    System.out.println("Hi");
+                    System.out.println("Renter Default");
             }
-        }).match(String.class, message -> {
-            System.out.println(message);
-        }).build();
+        }).match(String.class, System.out::println).build();
     }
 
     @Override

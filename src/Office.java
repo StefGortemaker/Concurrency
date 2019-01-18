@@ -8,7 +8,7 @@ public class Office {
     private int count = 0;
 
     public Office(String name){
-        available = true;
+        available = false;
         Random r = new Random();
         this.maxWerkplekken = r.nextInt((10 - 1) + 1) + 1;
         this.name = name + count;
