@@ -32,17 +32,22 @@ public class RentAgent extends AbstractActor {
                         getSender().tell(Message.OFFICE_NOT_AVAILABLE, getSelf());
                     }
                     break;
-                case OFFICE_NOT_AVAILABLE:
-                    System.out.println("Office is not available");
+                case I_WANT_TO_RENT_OFFICE:
+                    System.out.println("Office rented");
                     break;
-                case OFFICE_AVAILABLE:
-                    System.out.println("There is a office available");
+                case I_DONT_WANT_TO_RENT_OFFICE:
+                    System.out.println("Office not rented");
+                    break;
+                case I_WANT_TO_RESERVE:
+                    System.out.println("Office is reserved");
+                    break;
+                case I_DONT_WANT_TO_RESERVE:
+                    System.out.println("Office is not reserved");
+                    break;
                 default:
-                    System.out.println("Hi");
+                    System.out.println("RentAgent Default");
             }
-        }).match(String.class, message -> {
-            System.out.println(message);
-        }).build();
+        }).match(String.class, System.out::println).build();
     }
 
     @Override
