@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class SuperFlex {
 
-    public ActorSystem actorSystem;
     private ArrayList<Location> locations;
 
     public static void main(String[] args) {
@@ -15,22 +14,23 @@ public class SuperFlex {
     }
 
     private void run() {
-        actorSystem = ActorSystem.create("SuperFlex-App");
+        ActorSystem actorSystem = ActorSystem.create("SuperFlex-App");
 
         locations = new ArrayList<>(5);
         locations.add(new Location("Enschede", actorSystem));
         locations.add(new Location("Deventer", actorSystem));
 
-        ActorRef rentAgentEnschede = locationCheck("Enschede").getRentAgent();
-        ActorRef rentAgentDeventer = locationCheck("Deventer").getRentAgent();
+        ActorRef rentAgentEnschede = locationCheck(locations.get(0).getName()).getRentAgent();
+        ActorRef rentAgentDeventer = locationCheck(locations.get(1).getName()).getRentAgent();
 
         ActorRef renter = actorSystem.actorOf(Renter.prop(rentAgentEnschede), "renter");
 
         renter.tell(Message.I_WANT_TO_RENT_OFFICE, rentAgentEnschede);
+        rentAgentEnschede.tell(Message.RENTER_WANT_A_OFFICE, rentAgentDeventer);
         if (locations.get(0).checkAvailabilityOffice()) {
-            rentAgentEnschede.tell(Message.OFFICE_AVAILABLE, renter);
+            renter.tell(Message.OFFICE_AVAILABLE, rentAgentEnschede);
         } else {
-            rentAgentEnschede.tell(Message.OFFICE_NOT_AVAILABLE, renter);
+            renter.tell(Message.OFFICE_NOT_AVAILABLE, rentAgentEnschede);
         }
 
         //rentAgent.tell(Message.OFFICE_AVAILABLE, renter);
