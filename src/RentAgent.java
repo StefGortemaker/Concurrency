@@ -22,7 +22,7 @@ public class RentAgent extends AbstractActor {
         return receiveBuilder()
                 .match(Message.class, message -> {
             switch (message) {
-                case I_WANT_TO_RENT_OFFICE:
+                case RENTER_WANT_A_OFFICE:
                     System.out.println("Alright, let me check if it is available");
 
                     if (location.checkAvailabilityOffice()){
@@ -34,6 +34,8 @@ public class RentAgent extends AbstractActor {
                 case OFFICE_NOT_AVAILABLE:
                     System.out.println("Office is not available");
                     break;
+                case OFFICE_AVAILABLE:
+                    System.out.println("There is a office available");
                 default:
                     System.out.println("Hi");
             }

@@ -27,8 +27,7 @@ public class SuperFlex {
     ActorRef renter = actorSystem.actorOf(Renter.prop(rentAgentEnschede), "renter");
 
     System.out.println("is there a office available?");
-    rentAgentEnschede.tell(Message.I_WANT_TO_RENT_OFFICE, renter);
-
+    rentAgentEnschede.tell(Message.RENTER_WANT_A_OFFICE, renter);
   }
 
   private Location locationCheck(String name) {

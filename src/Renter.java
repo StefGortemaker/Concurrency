@@ -30,15 +30,11 @@ public class Renter extends AbstractActor {
         }).match(String.class, message -> {
             System.out.println(message);
         }).build();
-
-
     }
 
     @Override
     public void preStart() {
         System.out.println("Renter started");
-        //rentAgent.tell(Message.I_WANT_TO_RENT_OFFICE, getSelf());
-
     }
 
     public void postStop() {

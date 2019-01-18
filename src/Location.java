@@ -16,7 +16,6 @@ public class Location {
         this.capacity = 10;
         for(int i = 0; i < capacity; i++){
             offices.add(new Office("office"));
-            //System.out.println(offices.get(i).getName());
         }
         //rentAgent = actorSystem.actorOf(Props.create(RentAgent.class), "rentAgent"+name);
     }
