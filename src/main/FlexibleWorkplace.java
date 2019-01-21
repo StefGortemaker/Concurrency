@@ -1,3 +1,5 @@
+package main;
+
 public class FlexibleWorkplace {
 
   private String name;
