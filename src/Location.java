@@ -10,12 +10,11 @@ public class Location {
     private int capacity;
     private ActorRef rentAgent;
     private String name;
-    private static int nextCount = 1;
+
 
     public Location(String name){
         this.name = name;
         this.capacity = (int) (Math.random()*50) +10;
-        int count = nextCount;
         for(int i = 0; i <= capacity; i++){
             offices.add(new Office("office "));
         }
