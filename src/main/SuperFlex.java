@@ -1,16 +1,19 @@
+package main;
+
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import messages.RenterLocations;
 
 public class SuperFlex {
 
   public ActorSystem actorSystem;
-  public static ArrayList<Location> locations;
   ActorRef rentAgentEnschede;
   ActorRef renter;
+  ArrayList<ActorRef> rentAgents = new ArrayList<>();
 
   public static void main(String[] args) {
     SuperFlex superFlex = new SuperFlex();
@@ -19,37 +22,19 @@ public class SuperFlex {
 
   private void run() {
     actorSystem = ActorSystem.create("SuperFlex-App");
-    createLocations();
 
-    rentAgentEnschede = actorSystem.actorOf(RentAgent.prop("Enschede", locations.get(0)));
-    //ActorRef rentAgentDeventer = actorSystem.actorOf(RentAgent.prop("Deventer", locations.get(1)));
-    renter = actorSystem.actorOf(Renter.prop(rentAgentEnschede), "renter");
+
+    for (int i = 0; i < 3; i++){
+      rentAgents.add(actorSystem.actorOf(RentAgent.prop("RentAgent_" + i)));
+    }
+
+    renter = actorSystem.actorOf(Renter.prop("renter"));
 
     printMainMenu();
 
     //System.out.println("is there a office available?");
-    //rentAgentEnschede.tell(Message.RENTER_WANT_A_OFFICE, renter);
-    //rentAgentEnschede.tell(Message.I_WANT_A_LIST_OF_OFFICES, renter);
-  }
-
-  private Location locationCheck(String name) {
-    for (Location location : locations) {
-      if (location.getName().equals(name)) {
-        return location;
-      }
-    }
-    return null;
-  }
-
-  private void createLocations() {
-    locations = new ArrayList<>(5);
-    for (int i = 0; i < 5; i++) {
-      locations.add(new Location("Location " + i));
-    }
-  }
-
-  private ArrayList<Location> getLocations() {
-    return locations;
+    //rentAgentEnschede.tell(main.Message.RENTER_WANT_A_OFFICE, renter);
+    //rentAgentEnschede.tell(main.Message.I_WANT_A_LIST_OF_OFFICES, renter);
   }
 
   private void printMainMenu() {
@@ -73,16 +58,19 @@ public class SuperFlex {
     }
     switch (choice) {
       case 1:
-        rentAgentEnschede.tell(Message.I_WANT_A_LIST_OF_LOCATIONS, renter);
+        for (ActorRef actorRef : rentAgents){
+          actorRef.tell(new RenterLocations(), renter);
+        }
+        //rentAgentEnschede.tell(Message.I_WANT_A_LIST_OF_LOCATIONS, renter);
         break;
       case 2:
         System.out.println("From which location? (1-100)");
-        locationName = "Location " + scanner.nextInt();
+        locationName = "main.Location " + scanner.nextInt();
         rentAgentEnschede.tell(Message.I_WANT_A_LIST_OF_OFFICES, renter);
         break;
       case 3:
         System.out.println("From which location? (1-100)");
-        locationName = "Location " + scanner.nextInt();
+        locationName = "main.Location " + scanner.nextInt();
         System.out.println("And which office you want? (a number)");
         String officeName = "office " + scanner.nextInt();
         rentAgentEnschede.tell(Message.I_WANT_TO_RENT_OFFICE, renter);

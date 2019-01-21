@@ -1,0 +1,8 @@
+package main;
+
+public enum Message {
+  I_WANT_TO_RENT_OFFICE,
+  I_WANT_A_LIST_OF_LOCATIONS,
+  I_WANT_A_LIST_OF_OFFICES,
+  I_WANT_TO_RELEASE_A_RENTED_OFFICE
+}
