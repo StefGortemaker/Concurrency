@@ -81,6 +81,9 @@ public class SuperFlex {
         for (ActorRef actorRef : rentAgents){
           actorRef.tell(new LocationAndOffice(locationName, amountOfPeople), renter);
         }
+        System.out.println("wich one do you want to rent?(1-50)");
+        String officeName = "Office_" + scanner.nextInt();
+
         break;
       case 4:
         rentAgentEnschede.tell(Message.I_WANT_TO_RELEASE_A_RENTED_OFFICE, renter);
