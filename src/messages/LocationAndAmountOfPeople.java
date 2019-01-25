@@ -1,23 +1,17 @@
 package messages;
 
-public class LocationAndOffice {
+public final class LocationAndAmountOfPeople {
 
   private String locationName;
-  private String officeName;
   private int amountOfPeople;
 
-  public LocationAndOffice(String locationName, String officeName, int amountOfPeople) {
+  public LocationAndAmountOfPeople(String locationName, int amountOfPeople) {
     this.locationName = locationName;
-    this.officeName = officeName;
     this.amountOfPeople = amountOfPeople;
   }
 
   public String getLocationName() {
     return locationName;
-  }
-
-  public String getOfficeName() {
-    return officeName;
   }
 
   public int getAmountOfPeople() {

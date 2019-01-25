@@ -34,4 +34,5 @@ public class Location {
   public String getName() {
     return this.name;
   }
+
 }

@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import messages.LocationAndAmountOfPeople;
 import messages.LocationAndOffice;
 import messages.OfficesLocation;
+import messages.Release;
+import messages.ReleaseOffice;
 import messages.RenterLocations;
 
 public class SuperFlex {
@@ -79,14 +82,18 @@ public class SuperFlex {
         System.out.println("And with how many people are you?");
         int amountOfPeople = scanner.nextInt();
         for (ActorRef actorRef : rentAgents){
-          actorRef.tell(new LocationAndOffice(locationName, amountOfPeople), renter);
+          actorRef.tell(new LocationAndAmountOfPeople(locationName, amountOfPeople), renter);
         }
-        System.out.println("wich one do you want to rent?(1-50)");
+        System.out.println("wich one do you want to rent?(1-40)");
         String officeName = "Office_" + scanner.nextInt();
-
+        for(ActorRef actorRef : rentAgents){
+          actorRef.tell(new LocationAndOffice(locationName, officeName, amountOfPeople), renter);
+        }
         break;
       case 4:
-        rentAgentEnschede.tell(Message.I_WANT_TO_RELEASE_A_RENTED_OFFICE, renter);
+        for(ActorRef actorRef : rentAgents) {
+          actorRef.tell(new Release(), renter);
+        }
         break;
       case 5:
         actorSystem.terminate();
