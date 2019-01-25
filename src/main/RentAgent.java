@@ -2,8 +2,9 @@ package main;
 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
-import java.util.ArrayList;
 import messages.AllLocations;
+import messages.LocationAndOffice;
+import messages.OfficeAvailability;
 import messages.OfficesFromLocation;
 import messages.OfficesLocation;
 import messages.RenterLocations;
@@ -41,6 +42,16 @@ public class RentAgent extends AbstractActor {
           if (location.getName().equalsIgnoreCase(message.getLocationName())) {
             getSender().tell(new OfficesFromLocation(location.getOffices()), getSelf());
           }
+        }).match(LocationAndOffice.class, message -> {
+          if (location.getName().equalsIgnoreCase(message.getLocationName())) {
+            for(Office office : location.getOffices()) {
+              if (office.getAvailable(message.getAmountOfPeople())){
+                getSender().tell(new OfficeAvailability(true, office), getSelf());
+              } else {
+                getSender().tell(new OfficeAvailability(false, office), getSelf());
+              }
+            }
+          }
         }).match(String.class, System.out::println).build();
   }
 
@@ -58,11 +69,9 @@ public class RentAgent extends AbstractActor {
   }
 
   public Location getAvailableLocation(int placesToRent) {
-
     if (location.checkAvailabilityOffice(placesToRent)) {
       return location;
     }
-
     return null;
   }
 }

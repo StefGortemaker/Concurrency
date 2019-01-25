@@ -3,6 +3,7 @@ package main;
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import messages.AllLocations;
+import messages.OfficeAvailability;
 import messages.OfficesFromLocation;
 
 public class Renter extends AbstractActor {
@@ -29,6 +30,10 @@ public class Renter extends AbstractActor {
         }).match(OfficesFromLocation.class, message -> {
           for (Office office : message.getOffices()){
             System.out.println(office.getName());
+          }
+        }).match(OfficeAvailability.class, message -> {
+          if(message.getOfficeAvaibable()){
+            System.out.println(message.getOffice().getName() + " is available.");
           }
         }).match(String.class, System.out::println).build();
   }

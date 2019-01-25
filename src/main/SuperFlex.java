@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import messages.LocationAndOffice;
 import messages.OfficesLocation;
 import messages.RenterLocations;
 
@@ -72,10 +73,14 @@ public class SuperFlex {
         break;
       case 3:
         System.out.println("From which location? (1-100)");
-        locationName = "main.Location " + scanner.nextInt();
-        System.out.println("And which office you want? (a number)");
-        String officeName = "office " + scanner.nextInt();
-        rentAgentEnschede.tell(Message.I_WANT_TO_RENT_OFFICE, renter);
+        locationName = "Location_" + scanner.nextInt();
+//        System.out.println("And which office you want? (a number)");
+//        String officeName = "Office_" + scanner.nextInt();
+        System.out.println("And with how many people are you?");
+        int amountOfPeople = scanner.nextInt();
+        for (ActorRef actorRef : rentAgents){
+          actorRef.tell(new LocationAndOffice(locationName, amountOfPeople), renter);
+        }
         break;
       case 4:
         rentAgentEnschede.tell(Message.I_WANT_TO_RELEASE_A_RENTED_OFFICE, renter);
