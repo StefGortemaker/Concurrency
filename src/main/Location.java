@@ -10,9 +10,10 @@ public class Location {
 
   public Location(String name, String rentAgentName) {
     this.name = name;
-    int capacity = (int) (Math.random() * 50) + 10;
-    for (int i = 0; i <= capacity; i++) {
-      offices.add(new Office(name + " office_" + i));
+    int capacity = (int) (Math.random() * 40) + 10;
+    //random.nextInt(max - min + 1) + min
+    for (int i = 1; i <= capacity + 1; i++) {
+      offices.add(new Office("Office_" + i));
     }
     this.rentAgentName = rentAgentName;
   }
@@ -31,6 +32,6 @@ public class Location {
   }
 
   public String getName() {
-    return this.rentAgentName + " " + this.name;
+    return this.name;
   }
 }

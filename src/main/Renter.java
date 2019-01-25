@@ -3,6 +3,7 @@ package main;
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import messages.AllLocations;
+import messages.OfficesFromLocation;
 
 public class Renter extends AbstractActor {
 
@@ -22,11 +23,13 @@ public class Renter extends AbstractActor {
   public Receive createReceive() {
     return receiveBuilder()
         .match(AllLocations.class, message -> {
-          for (Location location : message.getLocations()){
-            System.out.println(location.getName());
-          }
+          System.out.println(message.getLocation().getName());
 
           //when a renter wants a list of all loctaions
+        }).match(OfficesFromLocation.class, message -> {
+          for (Office office : message.getOffices()){
+            System.out.println(office.getName());
+          }
         }).match(String.class, System.out::println).build();
   }
 

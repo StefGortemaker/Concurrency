@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import messages.OfficesLocation;
 import messages.RenterLocations;
 
 public class SuperFlex {
@@ -23,9 +24,8 @@ public class SuperFlex {
   private void run() {
     actorSystem = ActorSystem.create("SuperFlex-App");
 
-
-    for (int i = 0; i < 3; i++){
-      rentAgents.add(actorSystem.actorOf(RentAgent.prop("RentAgent_" + i)));
+    for (int i = 1; i < 3 + 1; i++){
+      rentAgents.add(actorSystem.actorOf(RentAgent.prop("RentAgent_" + i, new Location("Location_" + i, "RentAgent_" + i))));
     }
 
     renter = actorSystem.actorOf(Renter.prop("renter"));
@@ -65,8 +65,10 @@ public class SuperFlex {
         break;
       case 2:
         System.out.println("From which location? (1-100)");
-        locationName = "main.Location " + scanner.nextInt();
-        rentAgentEnschede.tell(Message.I_WANT_A_LIST_OF_OFFICES, renter);
+        locationName = "Location_" + scanner.nextInt();
+        for (ActorRef actorRef : rentAgents){
+          actorRef.tell(new OfficesLocation(locationName), renter);
+        }
         break;
       case 3:
         System.out.println("From which location? (1-100)");
@@ -79,7 +81,9 @@ public class SuperFlex {
         rentAgentEnschede.tell(Message.I_WANT_TO_RELEASE_A_RENTED_OFFICE, renter);
         break;
       case 5:
-        System.exit(1);
+        actorSystem.terminate();
+
+        //System.exit(1);
       default:
         System.out.println("That's not an option.");
         printMainMenu();

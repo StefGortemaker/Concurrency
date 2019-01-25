@@ -5,13 +5,13 @@ import main.Location;
 
 public class AllLocations {
 
-  private final ArrayList<Location> locations;
+  private final Location location;
 
-  public AllLocations(ArrayList<Location> locations){
-    this.locations = locations;
+  public AllLocations(Location locations){
+    this.location = locations;
   }
 
-  public ArrayList<Location> getLocations(){
-    return locations;
+  public Location getLocation(){
+    return location;
   }
 }

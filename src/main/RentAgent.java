@@ -4,25 +4,23 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import java.util.ArrayList;
 import messages.AllLocations;
+import messages.OfficesFromLocation;
+import messages.OfficesLocation;
 import messages.RenterLocations;
 import messages.RenterRentOffice;
 
 public class RentAgent extends AbstractActor {
 
   private String name;
-  private ArrayList<Location> locations;
+  private Location location;
 
-  private RentAgent(String name) {
+  private RentAgent(String name, Location location) {
     this.name = name;
-    this.locations = new ArrayList<>();
-
-    for (int i = 0; i < 3; i++){
-      locations.add(new Location("Location_" + i, name));
-    }
+    this.location = location;
   }
 
-  public static Props prop(String name) {
-    return Props.create(RentAgent.class, name);
+  public static Props prop(String name, Location location) {
+    return Props.create(RentAgent.class, name, location);
   }
 
   @Override
@@ -37,8 +35,12 @@ public class RentAgent extends AbstractActor {
           /*for (Location location : locations){
             System.out.println(name + " " + location.getName());
           }*/
-          getSender().tell(new AllLocations(locations), getSelf());
+          getSender().tell(new AllLocations(location), getSelf());
 
+        }).match(OfficesLocation.class, message -> {
+          if (location.getName().equalsIgnoreCase(message.getLocationName())) {
+            getSender().tell(new OfficesFromLocation(location.getOffices()), getSelf());
+          }
         }).match(String.class, System.out::println).build();
   }
 
@@ -51,23 +53,16 @@ public class RentAgent extends AbstractActor {
     System.out.println("main.RentAgent exiting");
   }
 
-  public ArrayList<Location> getLocations() {
-    return locations;
+  public Location getLocation() {
+    return location;
   }
 
-  public void addLocation(Location locations) {
-    this.locations.add(locations);
-  }
+  public Location getAvailableLocation(int placesToRent) {
 
-  public ArrayList<Location> getAvailableLocations(int placesToRent){
-
-    ArrayList<Location> avaiableLocations = new ArrayList<>();
-
-    for (Location location : locations){
-      if (location.checkAvailabilityOffice(placesToRent)){
-        avaiableLocations.add(location);
-      }
+    if (location.checkAvailabilityOffice(placesToRent)) {
+      return location;
     }
-    return avaiableLocations;
+
+    return null;
   }
 }
