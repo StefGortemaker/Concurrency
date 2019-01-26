@@ -11,7 +11,6 @@ import messages.OfficeRented;
 import messages.OfficesFromLocation;
 import messages.OfficesLocation;
 import messages.Release;
-import messages.ReleaseOffice;
 import messages.RenterLocations;
 import messages.RenterRentOffice;
 import messages.WaitForOffice;

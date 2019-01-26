@@ -6,7 +6,6 @@ public class Location {
 
   private ArrayList<Office> offices = new ArrayList<>();
   private String name;
-  private String rentAgentName;
 
   public Location(String name, String rentAgentName) {
     this.name = name;
@@ -15,7 +14,6 @@ public class Location {
     for (int i = 1; i <= capacity + 1; i++) {
       offices.add(new Office("Office_" + i));
     }
-    this.rentAgentName = rentAgentName;
   }
 
   public Boolean checkAvailabilityOffice(int placesToRent) {

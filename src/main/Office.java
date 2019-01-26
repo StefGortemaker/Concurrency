@@ -18,14 +18,11 @@ public class Office {
     waitingRenters = new ArrayList<>();
   }
 
-  public Boolean getAvailable(int placesToRent) {
-    if (available && placesToRent <= capacity) {
-      return true;
-    }
-    return false;
+  Boolean getAvailable(int placesToRent) {
+    return available && placesToRent <= capacity;
   }
 
-  public void addWaitingRenter(ActorRef renter){
+  void addWaitingRenter(ActorRef renter){
     waitingRenters.add(renter);
   }
 
@@ -33,22 +30,22 @@ public class Office {
     return waitingRenters;
   }
 
-  public String getName() {
+  String getName() {
     return this.name;
   }
 
-  public void rent(ActorRef currentRenter) {
+  void rent(ActorRef currentRenter) {
     available = false;
     this.currentRenter = currentRenter;
   }
 
-  public void release() {
+  void release() {
     available = true;
     this.currentRenter = null;
     nextWaitingRenter();
   }
 
-  public ActorRef getCurrentRenter() {
+  ActorRef getCurrentRenter() {
     return currentRenter;
   }
 
@@ -57,5 +54,4 @@ public class Office {
       waitingRenters.get(0).tell(new ReleaseOffice(this), ActorRef.noSender());
     }
   }
-
 }

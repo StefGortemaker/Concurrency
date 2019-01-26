@@ -12,6 +12,11 @@ import messages.Release;
 import messages.ReleaseOffice;
 import messages.WaitForOffice;
 
+/**
+ *
+ *
+ * @author Vincent Witten, Stef Gortemaker
+ */
 public class Renter extends AbstractActor {
 
   //private ActorRef rentAgent;
@@ -34,17 +39,17 @@ public class Renter extends AbstractActor {
 
           //when a renter wants a list of all loctaions
         }).match(OfficesFromLocation.class, message -> {
-          for (Office office : message.getOffices()){
+          for (Office office : message.getOffices()) {
             System.out.println(office.getName());
           }
         }).match(OfficeAvailability.class, message -> {
-          if(message.getOfficeAvaibable()){
+          if (message.getOfficeAvaibable()) {
             System.out.println(message.getOffice().getName() + " is available.");
           }
         }).match(OfficeRented.class, message -> {
-          if(message.getOfficeRented()){
+          if (message.getOfficeRented()) {
             System.out.println("Office rented.");
-          }else{
+          } else {
             System.out.println("Office not rented, do you want to wait for it? (Y/N)");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
@@ -57,7 +62,8 @@ public class Renter extends AbstractActor {
             }
           }
         }).match(ReleaseOffice.class, message -> {
-          System.out.println(message.getOffice().getName() + " you were waiting on has been released");
+          System.out
+              .println(message.getOffice().getName() + " you were waiting on has been released");
         }).match(Release.class, message -> {
           System.out.println("Your office has been released.");
         }).match(NoOffice.class, message -> {
