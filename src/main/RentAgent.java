@@ -15,20 +15,42 @@ import messages.RenterLocations;
 import messages.RenterRentOffice;
 import messages.WaitForOffice;
 
+/**
+ * The rentAgent class
+ * Extends from AbstractActor
+ * Handles messages from the renters
+ *
+ * @Author Vincent Witten & Stef Gortemaker
+ */
+
 public class RentAgent extends AbstractActor {
 
-  private String name;
   private Location location;
 
-  private RentAgent(String name, Location location) {
-    this.name = name;
+  /**
+   * Constructor for the rent agent
+   *
+   * @param location he belongs to
+   */
+  private RentAgent(Location location) {
     this.location = location;
   }
 
-  public static Props prop(String name, Location location) {
-    return Props.create(RentAgent.class, name, location);
+  /**
+   * Creates a new rent agent
+   *
+   * @param location he belongs to
+   * @return the created rent agent
+   */
+  public static Props prop(Location location) {
+    return Props.create(RentAgent.class, location);
   }
 
+  /**
+   * Handles the incoming and outcoming messages
+   *
+   * @return a new message
+   */
   @Override
   public Receive createReceive() {
     return receiveBuilder()
@@ -40,20 +62,27 @@ public class RentAgent extends AbstractActor {
         }).match(RenterLocations.class, message -> {
           getSender().tell(new AllLocations(location), getSelf());
 
+          //when a renter wants a list of offices of a location
         }).match(OfficesLocation.class, message -> {
           if (location.getName().equalsIgnoreCase(message.getLocationName())) {
+            //tell renter the list of offices
             getSender().tell(new OfficesFromLocation(location.getOffices()), getSelf());
           }
+
+          //when a renter wants to know if there are any offices available
         }).match(LocationAndAmountOfPeople.class, message -> {
           if (location.getName().equalsIgnoreCase(message.getLocationName())) {
             for (Office office : location.getOffices()) {
               if (office.getAvailable(message.getAmountOfPeople())) {
+                //
                 getSender().tell(new OfficeAvailability(true, office), getSelf());
               } else {
                 getSender().tell(new OfficeAvailability(false, office), getSelf());
               }
             }
           }
+
+          //when a renter wants to rent an office
         }).match(LocationAndOffice.class, message -> {
           if (location.getName().equalsIgnoreCase(message.getLocationName())) {
             for (Office office : location.getOffices()) {
@@ -67,18 +96,21 @@ public class RentAgent extends AbstractActor {
               }
             }
           }
+
+          // when a renter wants to wait for an office
         }).match(WaitForOffice.class, message -> {
           if (message.getiWantToWaitForOffice()) {
             message.getOffice().addWaitingRenter(getSender());
           }
+
+          //when a renter wants to release his office
         }).match(Release.class, message -> {
           for (Office office : location.getOffices()) {
             if (office.getCurrentRenter() != null) {
               if (office.getCurrentRenter().equals(getSender())) {
                 office.release();
                 getSender().tell(new Release(), getSelf());
-              }
-              else {
+              } else {
                 getSender().tell(new NoOffice(), getSelf());
               }
             }
@@ -86,23 +118,14 @@ public class RentAgent extends AbstractActor {
         }).match(String.class, System.out::println).build();
   }
 
+  //a sign that he started
   @Override
   public void preStart() {
-    System.out.println("main.RentAgent started");
+    System.out.println("RentAgent started");
   }
 
+  //a sign that he stopped
   public void postStop() {
-    System.out.println("main.RentAgent exiting");
-  }
-
-  public Location getLocation() {
-    return location;
-  }
-
-  public Location getAvailableLocation(int placesToRent) {
-    if (location.checkAvailabilityOffice(placesToRent)) {
-      return location;
-    }
-    return null;
+    System.out.println("RentAgent exiting");
   }
 }
