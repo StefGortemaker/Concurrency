@@ -2,6 +2,7 @@ package main;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -39,7 +40,7 @@ public class SuperFlex {
     }
 
     //creates the renter
-    renter = actorSystem.actorOf(Renter.prop("renter"));
+    renter = actorSystem.actorOf(Props.create(Renter.class));
 
     printMainMenu();
   }

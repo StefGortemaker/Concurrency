@@ -65,7 +65,7 @@ public class RentAgent extends AbstractActor {
           //when a renter wants a list of offices of a location
         }).match(OfficesLocation.class, message -> {
           if (location.getName().equalsIgnoreCase(message.getLocationName())) {
-            //tell renter the list of offices
+            //tell the renter the list of offices
             getSender().tell(new OfficesFromLocation(location.getOffices()), getSelf());
           }
 
@@ -73,8 +73,8 @@ public class RentAgent extends AbstractActor {
         }).match(LocationAndAmountOfPeople.class, message -> {
           if (location.getName().equalsIgnoreCase(message.getLocationName())) {
             for (Office office : location.getOffices()) {
+              //tell the renter the availability of an office
               if (office.getAvailable(message.getAmountOfPeople())) {
-                //
                 getSender().tell(new OfficeAvailability(true, office), getSelf());
               } else {
                 getSender().tell(new OfficeAvailability(false, office), getSelf());
@@ -87,6 +87,7 @@ public class RentAgent extends AbstractActor {
           if (location.getName().equalsIgnoreCase(message.getLocationName())) {
             for (Office office : location.getOffices()) {
               if (office.getName().equals(message.getOfficeName())) {
+                //tell the renter if it went successful or not
                 if (office.getAvailable(message.getAmountOfPeople())) {
                   office.rent(getSender());
                   getSender().tell(new OfficeRented(true, office), getSelf());
@@ -118,13 +119,17 @@ public class RentAgent extends AbstractActor {
         }).match(String.class, System.out::println).build();
   }
 
-  //a sign that he started
+  /**
+   * before the Actor get started a message will be displayed
+   */
   @Override
   public void preStart() {
     System.out.println("RentAgent started");
   }
 
-  //a sign that he stopped
+  /**
+   * before the Actor get stopped a message will be displayed
+   */
   public void postStop() {
     System.out.println("RentAgent exiting");
   }
