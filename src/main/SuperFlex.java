@@ -2,6 +2,7 @@ package main;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.actor.Props;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -33,7 +34,7 @@ public class SuperFlex {
           RentAgent.prop("RentAgent_" + i, new Location("Location_" + i, "RentAgent_" + i))));
     }
 
-    renter = actorSystem.actorOf(Renter.prop("renter"));
+    renter = actorSystem.actorOf(Props.create(Renter.class));
 
     printMainMenu();
   }
@@ -95,7 +96,13 @@ public class SuperFlex {
       case 5:
         actorSystem.terminate();
 
-        //System.exit(1);
+        try {
+          TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+
+        System.exit(0);
       default:
         System.out.println("That's not an option.");
         printMainMenu();
@@ -104,7 +111,7 @@ public class SuperFlex {
     }
     try {
       TimeUnit.SECONDS.sleep(1);
-      //printMainMenu();
+      printMainMenu();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

@@ -1,17 +1,21 @@
 package messages;
 
-import java.util.ArrayList;
 import main.Location;
 
+/**
+ * This class is a Message
+ *
+ * @author Vincent Witten, Stef Gortemaker
+ */
 public class AllLocations {
 
   private final Location location;
 
-  public AllLocations(Location locations){
+  public AllLocations(Location locations) {
     this.location = locations;
   }
 
-  public Location getLocation(){
+  public Location getLocation() {
     return location;
   }
 }
